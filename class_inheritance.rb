@@ -15,33 +15,16 @@ class Employee
 
   def boss=(boss)
     @boss = boss
-    boss.employees << self
+    boss.employees << self unless boss.nil?
   end
 
   def bonus (multiplier)
-    if !self.is_a?(Manager)
-     return (self.salary * multiplier)
-    else
-     return (bonus_calculator * multiplier)
-    end
-  end
-
-
-  def bonus_calculator
-    # debugger
-    total_salaries = 0
-
-    # total_salaries += self.salary if !self.is_a?(Manager)
-
-    self.employees.each do |employee|
-      if employee.is_a?(Manager)
-        # total_salaries += employee.salary + 
-        employee.bonus_calculator
-      else
-        total_salaries += employee.salary
-      end
-    end
-    total_salaries
+    self.salary * multiplier
+    # if !self.is_a?(Manager)
+    #  return (self.salary * multiplier)
+    # else
+    #  return (bonus_calculator * multiplier)
+    # end
   end
 end
 
@@ -55,19 +38,34 @@ class Manager < Employee
   attr_reader :employees
   
   def initialize(name, title, salary, boss=nil)
-    super(name, title, salary, boss=nil)
+    super(name, title, salary, boss)
     @employees = []
   end
-
+  
   def boss=(boss)
     super
   end
 
-  def bonus_calculator
-    super
+  def bonus(multiplier)
+    self.bonus_calculator * multiplier
   end
-
-
+  
+  def bonus_calculator
+    # debugger
+    bonus_calculator = 0
+    self.employees.each do |employee|
+      if employee.is_a?(Manager)
+        bonus_calculator += employee.salary + employee.bonus_calculator
+        # employee.bonus_calculator
+      else
+        bonus_calculator += employee.salary
+        # bonus_calculator += employee.salary
+      end
+    end
+    bonus_calculator
+  end
+  
+  
   
   
 end
