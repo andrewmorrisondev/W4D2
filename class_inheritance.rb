@@ -1,7 +1,7 @@
 class Employee
 
-  attr_reader :name, :title, :salary, :boss
-  attr_writer :boss
+  attr_reader :name, :title, :salary, :boss, :employees
+  attr_writer :boss, :employees
 
   def initialize(name, title, salary, boss=nil)
     @name = name
@@ -9,16 +9,12 @@ class Employee
     @salary = salary
     @boss = boss
     @bonus = nil
+    boss.employees << self if boss != nil
   end
 
   def boss=(boss)
-    if self.boss == nil ##CEO
-      @boss = nil
-    else
-      @boss = boss
-      #add self into boss employee array
-      @boss.employees << self
-    end
+    @boss = boss
+    boss.employees << self
   end
 
   def bonus=(multiplier)
