@@ -22,17 +22,21 @@ class Employee
   end
 
   def bonus=(multiplier)
-    if self.is_a?(Manager)
+    if !self.is_a?(Manager)
+      @bonus = self.salary * multiplier
+    end
+
+
+
       ## total salary of all subemployees * multiplier 
       # manager.empl each do
       #collect
-      total = 1
+      total = 0
 
-      self.employees.each do |employee|
-        total *= @employee.bonus
+      self.employees.inject do |employee|
+        total += @employee.salary
       end
     else
-      @bonus = self.salary * multiplier
     end
   end
 
