@@ -1,17 +1,17 @@
 class Employee
 
-  attr_reader :name, :title, :salary,
-  attr_accessor :boss
+  attr_reader :name, :title, :salary, :boss
+  attr_writer :boss
 
-  def initialize(name, title, salary, boss)
+  def initialize(name, title, salary, boss=nil)
     @name = name
     @title = title
     @salary = salary
-    @boss = nil
+    @boss = boss
     @bonus = nil
   end
 
-  def boss=(@boss)
+  def boss=(boss)
     if self.boss == nil ##CEO
       @boss = nil
     else
@@ -25,35 +25,30 @@ class Employee
     if !self.is_a?(Manager)
       @bonus = self.salary * multiplier
     end
+  end
 
+  def bonus_calculator
+    total_salaries = 0
 
+    total_salaries += self.salary if !self.is_a?(Manager)
 
-      ## total salary of all subemployees * multiplier 
-      # manager.empl each do
-      #collect
-      total = 0
-
-      self.employees.inject do |employee|
-        total += @employee.salary
-      end
-    else
+    self.employees.each do |employee|
+      employee.bonus_calculator
     end
   end
-
-  end
-
-
-
 end
 
 class Manager < Employee
-  super
+  attr_reader :employees
   
-  def initialize
+  def initialize(name, title, salary, boss=nil)
+    super(name, title, salary, boss=nil)
     @employees = []
-    
   end
 
+  def boss=(boss)
+    super
+  end
   
   
 end
